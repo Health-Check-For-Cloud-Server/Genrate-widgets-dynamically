@@ -20,26 +20,26 @@
 					<h3>实验要求：</h3>
 					<ol>
 						<li>使用jQuery</li>
-						<li>点击&ltdiv&gt/&ltspan&gt中按钮，生成下一个&ltdiv&gt/&ltspan&gt</li>
-						<li>如此反复嵌套</li>
-						<li>嵌套生成层中加入可动态生成的“输入框”、“按钮”、“选择框”</li>
+						<li>生成控件</li>
+						<li>能将控件用中间代码描述并存储到文件</li>
+						<li>从文件读取中间代码，解析并生成控件</li>
 					</ol>
 				</div>
 				<div id="implementation_explanation">
 					<h3>实现描述：</h3>
 					<ul>
-						<li>点击展开生成控件</li>
-						<li>点击收起移除控件</li>
-						<li>生成的控件是hide的</li>
-						<li>控件以fadeIn效果进入</li>
-						<li>点击提交，获取form中信息并在动态生成的display_board中显示</li>
+						<li>点击添加，添加控件</li>
+						<li>点击保存，将mid_code （json字符串）发送到服务器，服务器将字符串保存到文件</li>
+						<li>点击加载，服务器读取文件，将文件内容交给js处理，js解析json，生成控件</li>				
+						<li>清除当前控件，清除对象obj中内容，清除mid_cod</li>				
+						<li>清除实现层，清除层中所有子对象</li>				
 					</ul>
 				</div>
 			</div>
 			<div id="add_control">
 				<div id="add_description">
-					选择需要生成的控件，点击生成，将在下方层中生成一个带有选中控件的层。
-					按钮是默认选择的，点击生成的按钮控件，将会在下方提示层显示信息。
+					选择需要生成的控件，点击添加，将在下方层中添加一个带有选中控件的层。
+					按钮是默认选择的，点击生成的按钮控件，会将表单信息提交到服务器。
 				</div>
 				<form id="add_control_list">
 					<ul>
@@ -48,7 +48,7 @@
 						<li><input type="checkbox" name="widget_choice" value="multiple_choice" />复选框</li>
 						<li><input type="checkbox" name="widget_choice" value="button" checked="checked" disabled="disabled" />按钮</li>
 					</ul> 
-					<p id="generate_btn"/>生成</p>
+					<p id="generate_btn"/>添加</p>
 				</form>
 			</div>
 			<div id="middle_code"></div>

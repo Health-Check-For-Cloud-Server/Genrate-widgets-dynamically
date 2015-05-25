@@ -65,7 +65,7 @@
 	border-right:1px dotted #aaa;
 	font-family:微软雅黑;
 	width:230px;
-	height:250px;
+	height:320px;
 	padding:20px 20px 0px 0px;
 }
 #implementation_explanation ul{
@@ -144,9 +144,13 @@
 #middle_code{
 	margin-top:20px;
 	float:right;
-	width:700px;
-	padding:20px 0px 20px 0px;
+	width:680px;
+	padding:20px 10px 20px 10px;
 	border:1px solid #aaa;
+	word-break:break-all; /*支持IE，chrome，FF不支持*/
+	word-wrap:break-word;/*支持IE，chrome，FF*/
+	
+
 }
 
 #lab_implementation{
@@ -164,39 +168,45 @@
 	overflow:hidden;
 	margin:5px 0px 5px 0px;
 }
-#lab_implementation img{
-	float:left;
-	height:25px;
-	cursor:pointer;
-	transition: transform 1s;
-}
-#lab_implementation img:hover{
-	transform: rotate(180deg);
-	transition: transform 0.5s;
-}
 #lab_implementation form {
+	position:relative;
 	margin:auto;
 	margin-top:10px;
-	padding-bottom:10px;
 	border:1px solid #A0522D;
 	width:300px;
+	height:110px;
 }
 
 #lab_implementation form input[type="text"]{
-	
-	margin:10px 20px 10px 20px;
+	position:absolute;
+	margin:10px 20px 5px 20px;
 	padding:0px 5px 0px 5px;
 	width:260px;
 	height:30px;
+	top:0px;
 }
 #lab_implementation input[type="button"]{
+	position:absolute;
 	width:100px;
 	margin-left:30px;
+	bottom:10px;
+	left:60px;
 }
-#lab_implementation form input[type="radio"]{
-	width:50px;
+#lab_implementation form .radio{
+	position:absolute;
+	width:100px;
+	top:45px;
+	left:20px;
 }
-
+#lab_implementation form .checkbox{
+	position:absolute;
+	width:150px;
+	top:45px;
+	right:20px;
+}
+#lab_implementation input[type="radio"],input[type="checkbox"]{
+	margin:5px;
+}
 #control_btns{
 	position:fixed;
 	right:30px;

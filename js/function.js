@@ -1,50 +1,10 @@
-﻿var obj = new Array();
+﻿//定义全局变量
+var widget_unit_array = new Array();
+var obj = new Object();
+obj.widget_unit_array=widget_unit_array;
+obj.widget_unit_num = 0;
 var mid_code;
 
-//初始化
-//包括最顶部信息面板、初始层
-//初始层包括：动态生成触发按钮、提示信息和生成下一个层的按钮
-/*function init(){
-	// 顶层提示层
-	var div1 = $('<div>点击动态生成的按钮，这儿会有提示语~</div>');
-	div1.attr("id","display_board");
-	$("#lab_implementation").append(div1);
-	
-	// 初始层
-	var div2 = $('<div></div>');
-	$("#lab_implementation").append(div2);
-
-	var num=1;
-	div2.attr("class","lab_block");
-	div2.text("我是初始层，我是第 "+num+"层~");
-	var btn1 = $("<input type='button' />");
-	btn1.attr("value","开始");
-	$(btn1).bind("click",function(){
-		genNext(num,btn1);
-	});	
-
-	
-	var image1 = $("<image src='./image/add.png'title='点击展开'/>");
-	$(image1).toggle(
-		function(){
-			genWidgets(div2,num);
-			$(div2).find("form").first().show();				//第一次show时，设置时间无效
-			$(div2).find("form").first().hide();
-			$(div2).find("form").first().fadeIn(1000);
-		},
-		function(){
-			// $(div2).find("form").first().hide(1000);		//设置时间完全无效
-			// $(div2).find("form").first().show();
-			// $(div2).find("form").first().fadeOut(1000); 
-			removeForm(div2);
-		}
-	);
-	
-						
-
-	$(div2).append(btn1);
-	$(div2).prepend(image1);
-}*/
 //响应生成按钮的点击事件
 function gen(){
 	var widget_unit = get_object_from_choice();
@@ -65,14 +25,19 @@ function get_object_from_choice(){
 	//alert(widget.length);
 
 	widget_unit.widgets = widgets;
-	widget_unit.widgetNum = widgets.length;
-	obj.push(widget_unit);
+	widget_unit.widget_num = widgets.length;
+	obj.widget_unit_array.push(widget_unit);
+	obj.widget_unit_num+=1;
 	return widget_unit;
 }
 
 //将object转为json字符串返回
 function object_to_json(object){
 	return JSON.stringify(object);
+}
+//将json字符串转为对象
+function json_to_object(json_string){
+	return JSON.parse(json_string);
 }
 //在中间代码层上显示格式化的mid_code
 function write_to_div(string){
@@ -107,22 +72,26 @@ function gen_widget(widget_unit){
 }
 // 添加输入框到block中
 function add_input_text(block){
-	var input = $("<input type='text' placeholder='随便输入一条消息，然后告诉我是真是假。' />");
+	var input = $("<input type='text' placeholder='文本信息' />");
 	$(block).append(input);
 }
 // 添加单选框到block中
 function add_single_choice(block){
-	var radio1 = $("<input type='radio' name='truth' value='真' checked='checked' >真</input>");
-	var radio2 = $("<input type='radio' name='truth' value='假' >假</input>");
-	$(block).append(radio1);
-	$(block).append(radio2);
+	var div = $("<div class='radio'></div>");
+	var radio1 = $("<input type='radio' name='a' value='左' checked='checked' >左</input>");
+	var radio2 = $("<input type='radio' name='a' value='右' >右</input>");
+	$(div).append(radio1);
+	$(div).append(radio2);
+	$(block).append(div);
 }
 // 添加多选框到block中
 function add_multiple_choice(block){
-	var checkbox1 = $("<input type='checkbox' name='a' value='真' >真</input>");
-	var checkbox2 = $("<input type='checkbox' name='a' value='假' >假</input>");
-	$(block).append(checkbox1);
-	$(block).append(checkbox2);
+	var div = $("<div class='checkbox'></div>");
+	var checkbox1 = $("<input type='checkbox' name='b' value='第一个' >第一个</input>");
+	var checkbox2 = $("<input type='checkbox' name='b' value='第一个' >第二个</input>");
+	$(div).append(checkbox1);
+	$(div).append(checkbox2);
+	$(block).append(div);
 }
 // 添加多选框到block中
 function add_button(block){
@@ -158,100 +127,82 @@ function widget_unit_submit(block){
 		message_to_server.multiple_choice = multiple_choice;
 	}
 	//alert(object_to_json(message_to_server));
-	return send_message_to_server(object_to_json(message_to_server));
+	send_message_to_server(object_to_json(message_to_server));
 }
-
-function send_message_to_server(string){
-	
-}
-/*
-//在lab_implementation末尾加入动态生成的控件
-function genWidgets(){
-	var div = $('<div></div>');
-	var form = $('<form></form>');
-	form.hide();
-	var input = $("<input type='text' placeholder='随便输入一条消息，然后告诉我是真是假。'/>");
-	var btn = $("<input type='button' value='提 交' />");
-	var radio1 = $("<input type='radio' name='truth' value='真' checked='checked'>真</input>");
-	var radio2 = $("<input type='radio' name='truth' value='假'>假</input>");
-	$(form).append(input);
-	$(form).append(radio1);
-	$(form).append(radio2);
-	$(form).append(btn);
-	form.show();
-	$("#lab_implementation").append(form);
-	// $(block).find("input").first().after(form);
-	// $(block).find("img").first().attr("src","./image/remove.png");
-	// $(block).find("img").first().attr("title","收起");
-	
-	$(btn).click(function(){
-		$("#display_board").text("你告诉我一个消息：\""+input.val()+" \"，这是"+form.find(":checked").val()+"的~ 你还指望我会说什么 = =");
-	});
-}
-
-//删除block中动态生成的控件
-function removeForm(block){
-	$(block).find("form").first().remove();
-	$(block).find("img").first().attr("src","./image/add.png");
-	$(block).find("img").first().attr("title","展开");
-}
-//定义点击按钮的事件,点击生成下一个层
-//num 为当前层数
-//btn为当前按钮
-function genNext(num,btn){
-	num+=1;
-	var this_div = $(btn).parent();
-	var div = $('<div></div>');
-	div.attr("class","lab_block");
-	if($(this_div).find("div").length==0){
-		div.text("我是第"+num+"层~");	
+//获取xmlhttp对象
+function getXmlHttpObject(){
+	var xmlhttp;
+	if (window.XMLHttpRequest){
+		xmlhttp = new XMLHttpRequest();
 	}else{
-		div.text("我也是第"+num+"层~");	
+		xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
 	}
-	
-		var image = $("<image src='./image/add.png'title='点击展开'/>");
-	$(image).toggle(
-		function(){
-			genWidgets(div,num);
-			$(div).find("form").first().show();				//第一次show时，设置时间无效
-			$(div).find("form").first().hide();
-			$(div).find("form").first().fadeIn(1000);
-		},
-		function(){
-			removeForm(div);
-		}
-	);
-		
-	var btn = $("<input type='button' />");
-	btn.attr("value","生成新层");
-	$(this_div).append(div);
-	$(div).append(btn);
-	$(div).prepend(image);
-	$(btn).bind("click",function(){
-		genNext(num,btn);
-	});
-}*/
+	return xmlhttp;
+}
+//将表单信息发给服务器
+function send_message_to_server(json_string){
+	var xmlhttp=getXmlHttpObject();
+	var url="./dispose_message.php";
+	url+="?message="+json_string;
+	xmlhttp.onreadystatechange=stateChanged;
+	xmlhttp.open("GET",url,false)
+	xmlhttp.send();
+	alert(xmlhttp.responseText);
+}
+
+function stateChanged(){
+	if (xmlHttp.readyState==4 || xmlHttp.readyState=="complete")
+	{
+	}
+}
+
 //保存控件
 function save(){
-
+	var xmlhttp = getXmlHttpObject();
+	var url="./save.php";
+	url+="?mid_code="+mid_code;								//设置发送给服务器的信息 mid_code=mid_code
+	xmlhttp.onreadystatechange=stateChanged;
+	xmlhttp.open("GET",url,false)							//发送请求到服务器
+	xmlhttp.send();
+	alert(xmlhttp.responseText);							//弹出返回信息
 }
 //加载控件
 function reload(){
-
+	var xmlhttp = getXmlHttpObject();						//得到xmlHttp对象
+	var url="./reload.php";										//设置url
+	xmlhttp.onreadystatechange=stateChanged;	//readyState 改变时，就会触发 onreadystatechange 事件，详见w3school AJAX XHR readyState
+	xmlhttp.open("GET",url,false)							//发送请求到服务器
+	xmlhttp.send();
+	var string = xmlhttp.responseText;						//获取服务器返回信息，设置mid_code
+	if(string==""){
+		alert("文件为空或不存在");
+	}else{
+		mid_code=string;
+		write_to_div(mid_code);										//将mid_code显示在页面上
+		obj=json_to_object(mid_code);							//解析json字符串，得到对象，存入obj
+		//alert(obj.widget_unit_array.length);
+		
+		clear_div();																				//根据obj生成控件
+		for(var i=0 ; i<obj.widget_unit_array.length ; i++){
+			gen_widget(obj.widget_unit_array[i]);
+		}	
+	}
 }
 //清除当前控件
 function clear_widget(){
-	while(obj.length!=0){
-		obj.pop();		
+	while(obj.widget_unit_array.length!=0){
+		obj.widget_unit_array.pop();
 	}
+	obj.widget_unit_num=0;
 	mid_code = object_to_json(obj);
 	write_to_div(mid_code);
+	clear_div();
 }
 //清除lab_implementation层中所有内容
 function clear_div(){
 	$("#lab_implementation").children().remove();
 }
-
+//中间代码层的隐藏和显示
 function mid_code_display(){
 	if($("#middle_code").is(":hidden")){
 		$("#middle_code").show(300);
