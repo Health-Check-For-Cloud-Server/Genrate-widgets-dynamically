@@ -160,26 +160,26 @@ function stateChanged(){
 function save(){
 	var xmlhttp = getXmlHttpObject();
 	var url="./save.php";
-	url+="?mid_code="+mid_code;								//设置发送给服务器的信息 mid_code=mid_code
+	url+="?mid_code="+mid_code;			//设置发送给服务器的信息 mid_code=mid_code
 	xmlhttp.onreadystatechange=stateChanged;
-	xmlhttp.open("GET",url,false)							//发送请求到服务器
+	xmlhttp.open("GET",url,false)			//发送请求到服务器
 	xmlhttp.send();
-	alert(xmlhttp.responseText);							//弹出返回信息
+	alert(xmlhttp.responseText);			//弹出返回信息
 }
 //加载控件
 function reload(){
-	var xmlhttp = getXmlHttpObject();						//得到xmlHttp对象
-	var url="./reload.php";										//设置url
+	var xmlhttp = getXmlHttpObject();		//得到xmlHttp对象
+	var url="./reload.php";				//设置url
 	xmlhttp.onreadystatechange=stateChanged;	//readyState 改变时，就会触发 onreadystatechange 事件，详见w3school AJAX XHR readyState
-	xmlhttp.open("GET",url,false)							//发送请求到服务器
+	xmlhttp.open("GET",url,false)			//发送请求到服务器
 	xmlhttp.send();
-	var string = xmlhttp.responseText;						//获取服务器返回信息，设置mid_code
+	var string = xmlhttp.responseText;		//获取服务器返回信息，设置mid_code
 	if(string==""){
 		alert("文件为空或不存在");
 	}else{
 		mid_code=string;
-		write_to_div(mid_code);										//将mid_code显示在页面上
-		obj=json_to_object(mid_code);							//解析json字符串，得到对象，存入obj
+		write_to_div(mid_code);			//将mid_code显示在页面上
+		obj=json_to_object(mid_code);		//解析json字符串，得到对象，存入obj
 		//alert(obj.widget_unit_array.length);
 		
 		clear_div();																				//根据obj生成控件
